@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Traffic Enforcement Dashboard</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+
+<header>
+  <div class="logo">Traffic <span>Enforce</span></div>
+  <div class="clock" id="clock">--:--:--</div>
+</header>
+
+<!-- UPLOAD -->
+<div class="upload-card">
+  <div class="upload-title">📹 Upload &amp; Process Video</div>
+  <div class="upload-row">
+    <label class="file-pick" for="videoInput">⬆ Choose Video</label>
+    <input type="file" id="videoInput" accept="video/*,.mkv,.mp4,.avi,.mov">
+    <span id="fileName">No file chosen</span>
+    <button class="btn" id="startBtn" onclick="uploadVideo()">▶ Start Processing</button>
+    <button class="btn danger" style="margin-left:auto" onclick="clearData()">🗑 Clear All Data</button>
+  </div>
+  <div class="progress-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="status-line" id="statusLine"></div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-card red"><div class="stat-label">Total Violations</div><div class="stat-value" id="s-total">–</div></div>
+  <div class="stat-card amber"><div class="stat-label">Overspeed</div><div class="stat-value" id="s-speed">–</div></div>
+  <div class="stat-card amber"><div class="stat-label">No Helmet</div><div class="stat-value" id="s-helmet">–</div></div>
+  <div class="stat-card blue"><div class="stat-label">Cars</div><div class="stat-value" id="s-cars">–</div></div>
+  <div class="stat-card green"><div class="stat-label">Bikes</div><div class="stat-value" id="s-bikes">–</div></div>
+  <div class="stat-card"><div class="stat-label">Avg Speed</div><div class="stat-value" id="s-avg">–</div></div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <label for="f-type">Type</label>
+  <select id="f-type">
+    <option value="">All</option>
+    <option value="car">Car</option>
+    <option value="bike">Bike</option>
+  </select>
+
+  <label for="f-viol">Violation</label>
+  <select id="f-viol">
+    <option value="">All</option>
+    <option value="OverSpeed">Overspeed</option>
+    <option value="No Helmet">No Helmet</option>
+  </select>
+
+  <button class="btn"       id="filterBtn"  onclick="applyFilter()">Filter</button>
+  <button class="btn ghost" id="resetBtn"   onclick="resetFilters()">Reset</button>
+  <button class="btn ghost" id="refreshBtn" onclick="manualRefresh()" style="margin-left:auto">↻ Refresh</button>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>Type</th><th>Vehicle ID</th>
+        <th>Speed</th><th>Violation</th><th>Timestamp</th><th>Evidence</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div class="empty" id="emptyMsg" style="display:none">No violations found.</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <img id="modalImg" src="" alt="Evidence">
+    <div class="modal-meta" id="modalMeta"></div>
+  </div>
+</div>
+
+<div id="alert-bar"></div>
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+
+</body>
+</html>
